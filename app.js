@@ -5,7 +5,7 @@ const port = 3001; // You can use any port number you prefer
 // Define a route
 app.get('/', (req, res) => {
   res.send('Hello John');
-});
+}); 
 
 app.get('/health', (req, res) => {
   res.send('success'); 
