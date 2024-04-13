@@ -1,9 +1,12 @@
 pipeline {
-    agent build
+    agent {
+        label "build"
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                script { 
+                script {  
                     checkout scm
                 }
             }
