@@ -7,6 +7,7 @@ pipeline {
         REGION = 'us-east-1'
         USERNAME = 'AWS'
         ECR_URL = '097531186751.dkr.ecr.us-east-1.amazonaws.com'
+        VERSION = "${BUILD_NUMBER}-${new Date().format("yyyyMMdd-HHmmss")}" // Dynamic version combining build number and timestamp
     }
 
     stages {
@@ -31,8 +32,8 @@ pipeline {
         stage('Push to ECR'){
             steps{
                 sh 'docker build -t backend .'
-                sh "docker tag backend:latest ${ECR_URL}/backend:latest"
-                sh "docker push ${ECR_URL}/backend:latest"
+                sh "docker tag backend:latest ${ECR_URL}/backend:${VERSION}"
+                sh "docker push ${ECR_URL}/backend:${VERSION}"
             }
         }
     }
