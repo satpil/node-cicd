@@ -31,16 +31,10 @@ pipeline {
         stage('Push to ECR'){
             steps{
                 sh 'docker build -t backend .'
-                sh "docker tag backend:latest ${PASSWORD}/backend:latest"
-                sh "docker push ${PASSWORD}/backend:latest"
+                sh "docker tag backend:latest ${ECR_URL}/backend:latest"
+                sh "docker push ${ECR_URL}/backend:latest"
             }
         }
-        // stage('run docker container') {
-        //     steps {
-        //         sh 'docker container run -p 3001:3001 -d backend_basic'
-        //     }
-        // }
-
     }
 
     post {
