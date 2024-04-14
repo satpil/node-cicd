@@ -3,6 +3,12 @@ pipeline {
         label "build"
     }
 
+    environment {
+        REGION = 'us-east-1'
+        USERNAME = 'AWS'
+        PASSWORD = '097531186751.dkr.ecr.us-east-1.amazonaws.com'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,9 +18,21 @@ pipeline {
             }
         }
 
-        stage('Build docker image') {
-            steps {
-                sh 'docker build -t backend_basic .'
+        // stage('Build docker image') {
+        //     steps {
+        //         sh 'docker build -t backend_basic .'
+        //     }
+        // }
+        stage('Authenticate to ECR'){
+            steps{
+              sh `aws ecr get-login-password --region ${REGION} | docker login --username ${USERNAME} --password-stdin ${PASSWORD}`
+            }
+        }
+        stage('Push to ECR'){
+            steps{
+                sh 'docker build -t backend .'
+                sh `docker tag backend:latest ${PASSWORD}/backend:latest`
+                sh `docker push ${PASSWORD}/backend:latest`
             }
         }
         stage('run docker container') {
